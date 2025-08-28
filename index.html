@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Amazon Finds – Curated Deals & Top Picks</title>
+    <meta name="description"
+        content="Discover curated, up-to-date Amazon product picks and deals. Independent recommendations with clear pricing and quick links." />
+    <meta name="robots" content="index,follow" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Smart Amazon Finds",
+        "url": "https://example.com/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://example.com/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <style>
+        /* Base reset and typography */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html:focus-within {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: #0f172a;
+            background: #ffffff;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: #0ea5e9;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* -- ACCESSIBILITY IMPROVEMENT: Add consistent, visible focus styles for all interactive elements -- */
+        a:focus-visible,
+        button:focus-visible,
+        summary:focus-visible,
+        details:focus-visible {
+            outline: 3px solid #bae6fd;
+            outline-offset: 2px;
+            border-radius: .25rem;
+        }
+
+        .nav a.btn:focus-visible {
+            /* Maintain button-specific rounded corners on focus */
+            border-radius: .8rem;
+        }
+
+        /* Layout */
+        .container {
+            width: min(1100px, 92vw);
+            margin: 0 auto;
+        }
+
+        /* Header/Hero */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: saturate(180%) blur(8px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 50;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 0;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: .6rem;
+            font-weight: 700;
+            letter-spacing: .2px;
+        }
+
+        .brand svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .nav a.btn {
+            padding: .6rem .95rem;
+            border-radius: .8rem;
+            border: 1px solid #0ea5e9;
+            background: #0ea5e9;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .hero {
+            padding: 3.5rem 0 2.5rem;
+            text-align: center;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            margin: 0 0 .75rem;
+        }
+
+        .hero p {
+            margin: 0 auto 1.2rem;
+            color: #334155;
+            width: min(720px, 90%);
+        }
+
+        /* -- BEST PRACTICE: Moved inline styles to a class -- */
+        .hero-actions {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: .7rem;
+            flex-wrap: wrap;
+        }
+
+        .cta {
+            display: inline-flex;
+            gap: .6rem;
+            align-items: center;
+            padding: .9rem 1.2rem;
+            border-radius: 0.9rem;
+            background: #22c55e;
+            color: #fff;
+            font-weight: 700;
+            border: 1px solid #16a34a;
+        }
+
+        .cta.secondary {
+            background: #0ea5e9;
+            border-color: #0284c7;
+        }
+
+        .cta:hover {
+            filter: brightness(0.98);
+            text-decoration: none;
+        }
+
+        .badges {
+            margin-top: 1.5rem;
+            /* Increased margin for better spacing */
+            display: flex;
+            justify-content: center;
+            gap: .7rem;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            font-size: .85rem;
+            padding: .35rem .6rem;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #334155;
+        }
+
+        /* Benefits */
+        .benefits {
+            padding: 2.5rem 0;
+        }
+
+        .benefits h2 {
+            text-align: center;
+            /* -- UX IMPROVEMENT: Center align for consistency -- */
+            margin-bottom: 1.2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 840px) {
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.1rem;
+            background: #fff;
+            box-shadow: 0 1px 0 rgba(2, 6, 23, .04);
+        }
+
+        .card h3 {
+            margin-top: .3rem;
+            margin-bottom: .4rem;
+            font-size: 1.1rem;
+        }
+
+        .muted {
+            color: #475569;
+        }
+
+        /* Products */
+        .products {
+            padding: 2rem 0 1rem;
+            background: #f8fafc;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .products h2 {
+            text-align: center;
+            margin: 0 0 1.2rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 1000px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .product {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product .info {
+            padding: .9rem;
+            display: grid;
+            gap: .4rem;
+        }
+
+        .price {
+            font-weight: 800;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: .78rem;
+            padding: .2rem .5rem;
+            border-radius: .5rem;
+            border: 1px solid #e5e7eb;
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .product .cta2 {
+            margin: .6rem 0 0;
+            text-align: center;
+            padding: .6rem .8rem;
+            border-radius: .7rem;
+            background: #0ea5e9;
+            color: #fff;
+            border: 1px solid #0284c7;
+            font-weight: 700;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 2rem 0;
+        }
+
+        details {
+            border: 1px solid #e5e7eb;
+            border-radius: .8rem;
+            padding: .8rem .9rem;
+            background: #fff;
+        }
+
+        details[open] {
+            /* -- UX IMPROVEMENT: Add spacing when open -- */
+            padding-bottom: 1rem;
+        }
+
+        details+details {
+            margin-top: .7rem;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 700;
+            list-style: none;
+            /* Hide original marker */
+            display: flex;
+            /* -- UX IMPROVEMENT: Align text and icon -- */
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* -- UX IMPROVEMENT: Add a custom +/- icon to the FAQ -- */
+        summary::after {
+            content: '+';
+            font-size: 1.5rem;
+            font-weight: 400;
+            line-height: 1;
+            margin-left: .5rem;
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::after {
+            content: '−';
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0 4rem;
+            background: #ffffff;
+        }
+
+        .foot-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1.5rem;
+            /* Increased gap */
+        }
+
+        .footer-links ul {
+            /* -- BEST PRACTICE: Reset default list styles -- */
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: .5rem;
+        }
+
+        .footer-links h3 {
+            margin-top: 0;
+            margin-bottom: .6rem;
+        }
+
+        @media (max-width: 840px) {
+            .foot-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .subtle {
+            color: #64748b;
+            font-size: .93rem;
+        }
+
+        /* Cookie banner (basic, non-invasive) */
+        .cookie {
+            position: fixed;
+            inset: auto 1rem 1rem 1rem;
+            background: #0f172a;
+            color: #fff;
+            padding: .9rem 1.2rem;
+            /* Increased padding */
+            border-radius: .8rem;
+            box-shadow: 0 10px 25px rgba(2, 6, 23, .25);
+            display: none;
+            /* Initially hidden */
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .cookie p {
+            margin: 0;
+        }
+
+        .cookie button {
+            margin-left: .8rem;
+            border: 1px solid #94a3b8;
+            background: #1f2937;
+            color: #fff;
+            padding: .45rem .7rem;
+            border-radius: .6rem;
+            cursor: pointer;
+        }
+
+        /* Utility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .product-image-wrapper {
+            /* New CSS rule */
+            height: 180px;
+            /* Adjust as needed, but this gives a good common height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* Ensures nothing spills out */
+            background-color: #f8fafc;
+            /* Light background for cropped areas */
+            border-bottom: 1px solid #e5e7eb;
+            /* Visual separation from info */
+        }
+
+        .product-image-wrapper img {
+            width: 100%;
+            /* Ensure image fills width available to it */
+            height: 100%;
+            /* Ensure image fills height available to it */
+            object-fit: contain;
+            /* Key fix: Scales the image to fit without cropping */
+            object-position: center;
+            /* Centers the image within the space */
+            padding: 10px;
+            /* Optional: Add some padding around the images if they touch the edges */
+        }
+    </style>
+</head>
+
+<body>
+    <header role="banner">
+        <div class="container nav">
+            <a class="brand" href="#top" aria-label="Smart Amazon Finds home">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.88L18.18 22 12 18.77 5.82 22 7 14.15l-5-4.88 6.91-1.01L12 2z"
+                        stroke="#0ea5e9" stroke-width="1.5" />
+                </svg>
+                <span>Smart Amazon Finds</span>
+            </a>
+            <nav aria-label="Primary">
+                <a class="btn" href="#deals">Browse Deals</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container">
+                <h1 id="hero-title">Shop smarter with curated Amazon picks</h1>
+                <p>Independent recommendations. Quick links. No hype—just clear summaries and straightforward pricing to
+                    help you decide faster.</p>
+                <div class="hero-actions">
+                    <a class="cta" href="#deals" rel="nofollow noopener" aria-label="See current curated deals">See
+                        Current Picks</a>
+                    <a class="cta secondary" href="#faq" aria-label="Read frequently asked questions">How It Works</a>
+                </div>
+                <div class="badges">
+                    <span class="chip">Independent site</span>
+                    <span class="chip">Secure • No sign‑up</span>
+                    <span class="chip">Fast mobile experience</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="benefits container" aria-labelledby="benefits-title">
+            <h2 id="benefits-title" class="sr-only">Why shoppers use us</h2>
+            <div class="grid-3" role="list">
+                <article class="card" role="listitem">
+                    <h3>Save time</h3>
+                    <p class="muted">We highlight clear pros, use cases, and pricing at a glance so you don’t scroll
+                        endlessly.</p>
+                </article>
+                <article class="card" role="listitem">
+                    <h3>Curated, not cluttered</h3>
+                    <p class="muted">Selections are based on specs and real buyer feedback—no exaggerated claims.</p>
+                </article>
+                <article class="card" role="listitem">
+                    <h3>Direct to Amazon</h3>
+                    <p class="muted">Click through to complete your purchase on Amazon. Your cart and checkout stay on
+                        Amazon.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="deals" class="products" aria-labelledby="deals-title">
+            <div class="container">
+                <h2 id="deals-title">Today’s curated picks</h2>
+                <div class="grid-4" id="productGrid" role="list" aria-live="polite"></div>
+                <p class="subtle" style="text-align:center;margin:1rem 0 0;">Pricing and availability may change. Check
+                    Amazon for the most current details.</p>
+            </div>
+        </section>
+
+        <section class="container" style="padding:2rem 0 0;" aria-labelledby="about-title">
+            <h2 id="about-title">How this site works</h2>
+            <p class="subtle">We independently select and summarize popular products found on Amazon based on features
+                and verified-buyer feedback. If you click a link and make a purchase, we may earn a commission at no
+                additional cost to you. This helps keep the site free.</p>
+        </section>
+
+        <section id="faq" class="faq container" aria-labelledby="faq-title">
+            <h2 id="faq-title">Frequently asked questions</h2>
+            <details>
+                <summary>Do I need an Amazon account?</summary>
+                <p class="muted">Yes. We link to Amazon product pages where you can sign in and check out securely on
+                    Amazon.</p>
+            </details>
+            <details>
+                <summary>Are the prices final here?</summary>
+                <p class="muted">Prices and promotions can change on Amazon. Always review the final price on the Amazon
+                    page before purchasing.</p>
+            </details>
+            <details>
+                <summary>Is this site affiliated with Amazon?</summary>
+                <p class="muted">We are an independent website. Amazon and the Amazon logo are trademarks of Amazon.com,
+                    Inc. or its affiliates.</p>
+            </details>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <div class="container foot-grid">
+            <div>
+                <strong>Smart Amazon Finds</strong>
+                <p class="subtle">Independent picks and summaries. No claims of guaranteed results. Use your own
+                    judgment and always confirm specifications on Amazon.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#" id="openPrivacy">Privacy Policy</a></li>
+                    <li><a href="#" id="openTerms">Terms</a></li>
+                    <li><a href="#" id="openDisclosure">Affiliate Disclosure</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:contact@SmartAmazonFinds@store">contact@SmartAmazonFinds@store</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="subtle container" style="margin-top:1rem">© <span id="year"></span> Smart Amazon Finds. Amazon and the
+            Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.</p>
+    </footer>
+
+    <dialog id="modal" aria-labelledby="modalTitle">
+        <form method="dialog"
+            style="max-width: 720px; width: min(92vw, 720px); border: 1px solid #e5e7eb; padding: 1rem 1.2rem; border-radius: 1rem;">
+            <h3 id="modalTitle" style="margin-top:0"></h3>
+            <div id="modalBody" class="subtle" style="max-height: 50vh; overflow:auto"></div>
+            <div style="display:flex; justify-content:flex-end; gap:.5rem; margin-top: .9rem;">
+                <button type="submit">Close</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie notice">
+        <p>We use basic cookies for site functionality. <a href="#" id="openPrivacy2" style="color:#93c5fd">Learn
+                more</a>.</p>
+        <button id="cookieAccept" aria-label="Accept">OK</button>
+    </div>
+
+    <script>
+        // --- Minimal JS for interactivity and product rendering ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- JS ROBUSTNESS: Wrap logic in an event listener and add null checks ---
+            const yearEl = document.getElementById('year');
+            if (yearEl) {
+                yearEl.textContent = new Date().getFullYear();
+            }
+
+            // Demo products (replace href with your Amazon affiliate links)
+            const products = [{
+                title: "Wireless Noise-Canceling Headphones",
+                img: "https://m.media-amazon.com/images/I/61OHplw85eL._AC_SX679_.jpg",
+                bullets: ["Active noise canceling", "30-hr battery", "USB-C fast charge"],
+                price: "$129–$149", // FIX: Corrected price format
+                tag: "Popular",
+                href: "https://a.co/d/1tIc8XX"
+            },
+            {
+                title: "Portable Blender",
+                img: "https://m.media-amazon.com/images/I/615oOUt8wGL._AC_SX679_.jpg",
+                bullets: ["Compact + USB-C", "Dishwasher-safe jar", "Great for smoothies"],
+                price: "$29–$39", // FIX: Corrected price format
+                tag: "Budget Pick",
+                href: "https://a.co/d/9a8w4Ij"
+            },
+            {
+                title: "Smart Home Plug (2-Pack)",
+                img: "https://m.media-amazon.com/images/I/61HtvfEbIHL._SX522_.jpg",
+                bullets: ["App + voice control", "Schedules & timers", "No hub required"],
+                price: "$17–$24", // FIX: Corrected price format
+                tag: "Prime Eligible",
+                href: "https://a.co/d/2Q7QYft"
+            },
+            {
+                title: "USB-C GaN Charger 65W",
+                img: "https://m.media-amazon.com/images/I/51oKJkR+k9L._AC_SY879_.jpg",
+                bullets: ["Fast charge laptops", "Dual USB-C", "Travel-ready"],
+                price: "$29–$44", // FIX: Corrected price format
+                tag: "Editor’s Note",
+                href: "https://a.co/d/0Qw2lSb"
+            }
+            ];
+
+            const grid = document.getElementById('productGrid');
+            const renderProducts = () => {
+                if (!grid) return; // Null check
+                grid.innerHTML = products.map(p => `
+            <article class="product" role="listitem">
+              <div class="product-image-wrapper">
+                <img src="${p.img}" alt="${p.title}">
+              </div> 
+              <div class="info">
+                <strong>${p.title}</strong>
+                <ul class="muted" style="padding-left:1rem; margin:.2rem 0;">
+                  ${p.bullets.map(b => `<li>${b}</li>`).join('')}
+                </ul>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:.6rem;">
+                  <span class="price" aria-label="Approximate price range">${p.price}</span>
+                  <span class="tag" aria-label="Label">${p.tag}</span>
+                </div>
+                <a class="cta2" href="${p.href}" target="_blank" rel="sponsored noopener" aria-label="View on Amazon: ${p.title}">View on Amazon</a>
+              </div>
+            </article>`).join('');
+            };
+            renderProducts();
+
+            // Simple modal loader for footer links
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            const openDoc = (title, html) => {
+                if (!modal || !modalTitle || !modalBody) return; // Null check
+                modalTitle.textContent = title;
+                modalBody.innerHTML = html;
+                modal.showModal();
+            };
+
+            const privacyHTML = `
+          <p>We only collect minimal information required to operate this website (e.g., basic analytics and functional cookies). We do not sell personal information. For Amazon purchases, all checkout, payments, and account data are handled on Amazon.</p>
+          <p>If you contact us, we will use your email solely to respond. To request data deletion, email <a href="mailto:contact@SmartAmazonFinds@store">contact@SmartAmazonFinds@store</a>.</p>
+        `;
+
+            const termsHTML = `
+          <p>This website provides independent product summaries and links to Amazon. Information is provided “as is.” Always verify details on Amazon before purchasing. We are not responsible for pricing or availability changes.</p>
+          <p>By using this site, you agree not to misuse it or attempt to interfere with its operation.</p>
+        `;
+
+            const disclosureHTML = `
+          <p>Some links on this site are affiliate links. If you click a link and make a purchase, we may earn a commission at no extra cost to you.</p>
+          <p>Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates. We are an independent website and are not endorsed by Amazon.</p>
+        `;
+
+            document.getElementById('openPrivacy')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                openDoc('Privacy Policy', privacyHTML);
+            });
+
+            // BUG FIX: Link from cookie banner now shows the full privacy policy.
+            document.getElementById('openPrivacy2')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                openDoc('Privacy Policy', privacyHTML);
+            });
+
+            document.getElementById('openTerms')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                openDoc('Terms of Use', termsHTML);
+            });
+
+            document.getElementById('openDisclosure')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                openDoc('Affiliate Disclosure', disclosureHTML);
+            });
+
+            // Cookie banner logic
+            const cookieBanner = document.getElementById('cookieBanner');
+            const cookieAccept = document.getElementById('cookieAccept');
+            if (cookieBanner && cookieAccept) { // Null checks
+                const cookieKey = 'saf_cookie_ok_v1';
+                if (!localStorage.getItem(cookieKey)) {
+                    cookieBanner.style.display = 'flex';
+                }
+                cookieAccept.addEventListener('click', () => {
+                    localStorage.setItem(cookieKey, '1');
+                    cookieBanner.style.display = 'none';
+                });
+            }
+
+            // Basic search param support for ad groups (e.g., ?q=headphones)
+            const params = new URLSearchParams(location.search);
+            const q = params.get('q');
+            if (q) {
+                // Using textContent is safe and prevents XSS attacks
+                const sanitizedQ = q.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                document.title = `${sanitizedQ} – Smart Amazon Finds`;
+                const hero = document.getElementById('hero-title');
+                if (hero) {
+                    hero.textContent = `Top ${sanitizedQ} picks right now`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
